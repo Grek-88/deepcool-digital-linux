@@ -1,4 +1,4 @@
-# DeepCool Digital Display Driver (Linux)
+# DeepCool AK400 Digital SE Display Driver (Linux - tested on Mint)
 
 Python script and systemd service to drive DeepCool Digital status displays on Linux.
 
@@ -26,4 +26,5 @@ Python script and systemd service to drive DeepCool Digital status displays on L
 ## Management
 - **Stop:** `sudo systemctl stop deepcool`
 - **Start:** `sudo systemctl start deepcool`
+- **Status:** `sudo systemctl status deepcool`
 - **Logs:** `journalctl -u deepcool -f`
