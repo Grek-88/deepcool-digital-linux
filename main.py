@@ -3,7 +3,7 @@ import psutil
 import os
 
 def find_device():
-    # Ищем устройство DeepCool (Vendor ID: 3633)
+    # Search for DeepCool device (Vendor ID: 3633)
     for i in range(16):
         path = f'/dev/hidraw{i}'
         if os.path.exists(path):
@@ -18,6 +18,7 @@ def find_device():
 def get_stats():
     try:
         temps = psutil.sensors_temperatures()
+        # Using k10temp for AMD CPU temperature
         cpu_temp = int(temps['k10temp'][0].current) if 'k10temp' in temps else 0
         cpu_load = int(psutil.cpu_percent(interval=None))
         return cpu_temp, cpu_load
@@ -50,13 +51,13 @@ while True:
     try:
         with open(device_path, 'wb') as dev:
             while True:
-                # Цикл температуры
+                # Temperature display cycle
                 for _ in range(15):
                     t, l = get_stats()
                     send_temp(dev, t)
                     print(f"DISPLAY: TEMP {t}°C | CPU {l}%    ", end='\r')
                     time.sleep(1)
-                # Цикл нагрузки
+                # Load display cycle
                 for _ in range(15):
                     t, l = get_stats()
                     send_load(dev, l)
