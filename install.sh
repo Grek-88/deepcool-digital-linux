@@ -1,14 +1,14 @@
 #!/bin/bash
 echo "--- DeepCool Digital Linux Installer ---"
 
-# 1. Зависимости
+# 1. Dependencies
 sudo apt update && sudo apt install -y python3-psutil
 
-# 2. Права USB
+# 2. USB Permissions (udev rules)
 echo 'SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3633", ATTRS{idProduct}=="0001", MODE="0666", GROUP="plugdev"' | sudo tee /etc/udev/rules.d/99-deepcool.rules
 sudo udevadm control --reload-rules && sudo udevadm trigger
 
-# 3. Служба
+# 3. Systemd Service Configuration
 SCRIPT_PATH=$(pwd)/main.py
 cat <<SERVICE | sudo tee /etc/systemd/system/deepcool.service
 [Unit]
@@ -27,9 +27,9 @@ WorkingDirectory=$(pwd)
 WantedBy=multi-user.target
 SERVICE
 
-# 4. Запуск
+# 4. Service Activation
 sudo systemctl daemon-reload
 sudo systemctl enable deepcool.service
 sudo systemctl restart deepcool.service
 
-echo "Done!"
+echo "Installation complete!"
